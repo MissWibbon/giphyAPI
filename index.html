@@ -26,7 +26,7 @@
         <div class="row" style="margin-top: 20px;">
             <div class="col s8">
                 <div id="buttons">
-                    <button data-animal="jelly fish">
+                    <!-- <button data-animal="jelly fish">
                         Jellyfishing!
                     </button>
                     <button data-animal="shark">
@@ -38,12 +38,15 @@
                   <button data-animal="whale">
                     Jonah
                 </button>
+                <button data-animal="goldfish">
+                    Goldie
+                </button> -->
                 </div>
             </div>
             <div class="col s4">
-                <h4>Add an animal</h4>
+                <h4>Add an sea creature</h4>
                 <input id="animalAdd">
-                <button type="submit">Submit</button>
+                <button type="submit" id="submitButton">Submit</button>
             </div>
         </div>
     
@@ -54,10 +57,12 @@
 </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    $("button").on("click", function() {
-      var animal = $(this).attr("data-animal");
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+  <script type="text/javascript">        
+  
+  var arr = ["jellyfish", "shark", "aligator", "whale", "goldfish"];
+
+  function getResults(animal) {
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         animal + "&api_key=dc6zaTOxFJmzC&limit=10";
 
       $.ajax({
@@ -83,7 +88,28 @@
             $("#gifs-appear-here").prepend(gifDiv);
           }
         });
+  }
+  function createBtns(arr) {
+      var btns = $('<button>').text(arr);
+      btns.attr('data-animal', arr);
+    
+        $('#buttons').append(btns);
+    
+  }
+  $('#submitButton').on("click", function(){
+    var animalInput = $('#animalAdd').val().trim();
+    getResults(animalInput);
+    createBtns(animalInput);
+  });
+    $(document).on("click", 'button', function() {
+      
+      var animal = $(this).attr("data-animal");
+      getResults(animal);
     });
+    arr.map(key => {
+          createBtns(key);
+
+    })
   </script>
 </body>
 
